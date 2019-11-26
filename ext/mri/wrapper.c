@@ -233,6 +233,12 @@ char *__crypt_gensalt_rn(const char *prefix, unsigned long count,
 	return use(prefix, count, input, size, output, output_size);
 }
 
+char *dupstr(const char *s) {
+	const char *result = malloc(strlen(s) + 1);
+	if (result != NULL) { strcpy(result, s); }
+	return result;
+}
+
 char *__crypt_gensalt_ra(const char *prefix, unsigned long count,
 	const char *input, int size)
 {
@@ -243,7 +249,7 @@ char *__crypt_gensalt_ra(const char *prefix, unsigned long count,
 		input, size, output, sizeof(output));
 
 	if (retval) {
-		retval = strdup(retval);
+		retval = dupstr(retval);
 #ifndef __GLIBC__
 		/* strdup(3) on glibc sets errno, so we don't need to bother */
 		if (!retval)
